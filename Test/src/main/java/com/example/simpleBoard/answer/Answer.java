@@ -1,6 +1,7 @@
 package com.example.simpleBoard.answer;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.example.simpleBoard.question.Question;
 
@@ -24,7 +25,7 @@ public class Answer {
 	@Column(columnDefinition="TEXT")
 	private String content;
 	
-	private LocalDate createDate;
+	private LocalDateTime createDate;
 	
 	@ManyToOne
 	private Question question;
