@@ -15,13 +15,24 @@
 					    </tr>
 					  </thead>
 					  <tbody>
-						<tr th:each="question, loop : ${questionList}">
+						<tr th:each="question, loop : ${paging}">
 							<td>[[${loop.count}]]</td>
 							<td><a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a></td>
 							<td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
 						</tr>
 					  </tbody>
 					</table>
+						<div class="row">
+							<nav aria-label="Page navigation example" th:if="${!paging.isEmpty()}" class="w-100">
+								  <ul class="pagination justify-content-center">
+								    <li class="page-item"  th:classappend="${!paging.hasPrevious} ? 'disabled'"> <a class="page-link" th:href="@{|?page=${paging.number-1}|}">이전</a></li>
+									
+									<li class="page-item"th:each="page : ${#numbers.sequence(0, paging.totalPages - 1)}"th:if="${page < 5}"th:classappend="${paging.number == page} ? ' active'"><a class="page-link"th:href="@{|/question/list?page=${page}|}"th:text="${page + 1}"></a></li>
+									
+									<li class="page-item"><a class="page-link" th:href="@{|?page=${paging.number+1}|}">다음</a></li>
+								  </ul>
+							</nav>
+						</div>
 				</div>
 			</div>
 		</div>

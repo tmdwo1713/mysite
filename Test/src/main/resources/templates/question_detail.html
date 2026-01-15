@@ -16,12 +16,14 @@
 			<ul>
 				<li th:each="answer : ${question.answerList}" th:text="${answer.content}"></li>
 			</ul>
-		<form th:action="@{|/answer/create/${question.id}|}" method="post">
-			<textarea name="content" id="" cols="30" rows="10"></textarea>
+		<form th:object="${answerForm}" th:action="@{|/answer/create/${question.id}|}" method="post">
+			<textarea cols="30" rows="10" th:field="*{content}"></textarea>
+			<div th:replace="~{form_errors :: formErrorsFragment}"></div>
 			<input type="submit" value="답변 등록" />
 		</form>
 		<div>
 			<table></table>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
-</html>
+
+		</html>

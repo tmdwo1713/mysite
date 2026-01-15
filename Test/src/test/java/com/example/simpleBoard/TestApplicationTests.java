@@ -27,7 +27,6 @@ class TestApplicationTests {
 	@Autowired
 	private AnswerRepository answerRepository;
 
-	@Transactional
 	@Test
 	void contextLoads() {
 		/*
@@ -77,16 +76,18 @@ class TestApplicationTests {
 //		a1.setQuestion(question);
 //		this.answerRepository.save(a1);
 //		
-//		for(int i=0;i<50;i++) {
-//		Question q1 = new Question(); q1.setSubject("궁금합니다.["+i+"]");
-//		q1.setContent("질문 내용입니다.["+i+"]"); q1.setCreateDate(LocalDateTime.now());
-//		this.questionRepository.save(q1);
-//		}
+	for(int i=0;i<200;i++) {
+	Question q1 = new Question(); q1.setSubject("궁금합니다.["+i+"]");
+	q1.setContent("질문 내용입니다.["+i+"]"); q1.setCreateDate(LocalDateTime.now());
+	this.questionRepository.save(q1);
+	}
 		
 		
 		
-		List<Answer> qlist = this.answerRepository.findByQuestion(question);
-		System.out.println("Id 4의 답글 갯수는"+qlist.size()+"입니다.");
+	/*
+	 * List<Answer> qlist = this.answerRepository.findByQuestion(question);
+	 * System.out.println("Id 4의 답글 갯수는"+qlist.size()+"입니다.");
+	 */
 		
 		
 	}
