@@ -1,8 +1,18 @@
 package com.example.simpleBoard.user;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.simpleBoard.DataNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -11,14 +21,34 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private static final String UPLOAD_DIN_DIR="src/main/resources/static/img/user/";
 	
-	public SiteUser create(String username, String email, String password) {
+	public SiteUser create(String username, String email, String password, MultipartFile imageFile) throws IOException {
 		SiteUser user = new SiteUser();
 		user.setUsername(username);
 		user.setEmail(email);
 		user.setPassword(passwordEncoder.encode(password));
+		if(!imageFile.isEmpty()) {
+			String fileName = UUID.randomUUID().toString()+imageFile.getOriginalFilename();
+			Path filePath = Paths.get(UPLOAD_DIN_DIR, fileName);
+			Files.createDirectories(filePath.getParent());
+			Files.write(filePath, imageFile.getBytes());
+			user.setImageUrl("/img/user/"+fileName);
+		}
+		
+		
+		
 		this.userRepository.save(user);
 		return user;
 		
+	}
+	
+	public SiteUser getUser(String username) {
+		Optional<SiteUser> siteUser =  this.userRepository.findByUsername(username);
+		if(siteUser.isPresent()) {
+			return siteUser.get();
+		}else {
+			throw new DataNotFoundException("siteuser not found");
+		}
 	}
 }

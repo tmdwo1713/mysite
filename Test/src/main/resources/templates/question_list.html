@@ -6,11 +6,20 @@
 						<h1>질문 목록</h1>
 					</div>
 					<a th:href="@{/question/create}" class="btn btn-info">질문 등록</a>
-					<table class="table">
+					<div class="input-group">
+									<input type="text" id="search_kw" class="form-control" th:value="${kw}" name="kw"/>
+									<button class="btn btn-outline-secondary" type="button" id="btn_search">검색</button>
+								</div>	
+								<form th:action="@{/question/list}" method="get" id="searchForm">
+									<input type="text" id="kw" th:value="${kw}" name="kw"/>
+									<input type="text" id="page" th:value="${paging.number}" name="page"/>
+								</form>
+					<table class="table table-striped">
 					  <thead>
 					    <tr>
 					      <th scope="col">번호</th>
 					      <th scope="col">제목</th>
+					      <th scope="col">글쓴이</th>
 					      <th scope="col">작성일자</th>
 					    </tr>
 					  </thead>
@@ -18,6 +27,9 @@
 						<tr th:each="question, loop : ${paging}">
 							<td>[[${paging.getTotalElements - (paging.number * paging.size) - loop.index}]]</td>
 							<td><a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a><span class="text-danger badge bg-warning" th:if="${#lists.size(question.answerList) > 0}">[[${#lists.size(question.answerList)}]]</span></td>
+							<td>
+								<span >[[${question.author?.username}]]</span>
+							</td>
 							<td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
 						</tr>
 					  </tbody>
